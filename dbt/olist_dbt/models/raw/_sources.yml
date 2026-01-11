@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw tables loaded from Kaggle Olist CSV files via server-side COPY in Dockerized Postgres."
+    tables:
+      - name: orders
+        description: "Orders dataset (raw)."
+      - name: customers
+        description: "Customers dataset (raw)."
+      - name: order_items
+        description: "Order items dataset (raw)."
+      - name: order_payments
+        description: "Order payments dataset (raw)."
+      - name: order_reviews
+        description: "Order reviews dataset (raw)."
+      - name: products
+        description: "Products dataset (raw). Source column typos preserved in raw (e.g., *_lenght)."
+      - name: sellers
+        description: "Sellers dataset (raw)."
+      - name: geolocation
+        description: "Geolocation dataset (raw)."
+      - name: product_category_name_translation
+        description: "PT→EN category name translation (raw)."
