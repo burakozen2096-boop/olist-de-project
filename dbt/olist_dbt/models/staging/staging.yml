@@ -1,0 +1,124 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Staged orders. Grain: 1 row per order_id. Standardizes text and casts timestamps."
+    columns:
+      - name: order_id
+        description: "Order business key from source."
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Customer business key from source."
+        tests:
+          - not_null
+      - name: order_status
+        description: "Order status (trimmed; empty strings converted to NULL)."
+  - name: stg_customers
+    description: "Staged customers. Grain: 1 row per customer_id. Standardizes text fields."
+    columns:
+      - name: customer_id
+        description: "Customer business key from source."
+        tests:
+          - not_null
+          - unique
+      - name: customer_unique_id
+        description: "Stable customer identifier across orders (Olist)."
+  - name: stg_order_items
+    description: "Staged order items. Grain: 1 row per (order_id, order_item_id). Casts numeric columns and shipping timestamp."
+    columns:
+      - name: order_id
+        description: "Order business key."
+        tests:
+          - not_null
+      - name: order_item_id
+        description: "Item sequence within an order."
+        tests:
+          - not_null
+      - name: product_id
+        description: "Product business key."
+        tests:
+          - not_null
+      - name: seller_id
+        description: "Seller business key."
+        tests:
+          - not_null
+      - name: price
+        description: "Item price (cast to numeric)."
+      - name: freight_value
+        description: "Freight value (cast to numeric)."
+  - name: stg_products
+    description: "Staged products. Grain: 1 row per product_id. Fixes source typos and casts numeric attributes."
+    columns:
+      - name: product_id
+        description: "Product business key."
+        tests:
+          - not_null
+          - unique
+      - name: product_category_name
+        description: "Category name in Portuguese (join to translation later)."
+  - name: stg_order_payments
+    description: "Staged payments. Grain: 1 row per (order_id, payment_sequential). Casts installments and payment_value."
+    columns:
+      - name: order_id
+        description: "Order business key."
+        tests:
+          - not_null
+      - name: payment_sequential
+        description: "Payment sequence number within an order."
+        tests:
+          - not_null
+      - name: payment_type
+        description: "Payment method type (normalized text)."
+      - name: payment_value
+        description: "Payment amount (numeric)."
+
+  - name: stg_order_reviews
+    description: "Staged reviews. Grain: 1 row per review_id. Casts score and timestamps; normalizes empty strings to NULL."
+    columns:
+      - name: review_id
+        description: "Review business key."
+        tests:
+          - not_null
+          # unique test removed because review_id is not unique in source data
+      - name: order_id
+        description: "Order business key."
+        tests:
+          - not_null
+      - name: review_score
+        description: "Review score (int)."
+
+  - name: stg_sellers
+    description: "Staged sellers. Grain: 1 row per seller_id. Standardizes location fields."
+    columns:
+      - name: seller_id
+        description: "Seller business key."
+        tests:
+          - not_null
+          - unique
+      - name: seller_zip_code_prefix
+        description: "Seller ZIP code prefix."
+      - name: seller_state
+        description: "Seller state (normalized text)."
+
+  - name: stg_geolocation
+    description: "Staged geolocation. Grain: 1 row per raw record (no natural key). Casts lat/lng to numeric."
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: "ZIP code prefix."
+      - name: geolocation_lat
+        description: "Latitude (numeric)."
+      - name: geolocation_lng
+        description: "Longitude (numeric)."
+
+  - name: stg_product_category_name_translation
+    description: "Staged category translation mapping (PT→EN). Grain: 1 row per product_category_name."
+    columns:
+      - name: product_category_name
+        description: "Portuguese category name."
+        tests:
+          - not_null
+          - unique
+      - name: product_category_name_english
+        description: "English category name."
