@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: int_geolocation_zip_prefix
+    description: "Geolocation aggregated to 1 row per zip_code_prefix (mode city/state + avg lat/lng)."
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: "ZIP code prefix."
+        tests:
+          - not_null
+          - unique

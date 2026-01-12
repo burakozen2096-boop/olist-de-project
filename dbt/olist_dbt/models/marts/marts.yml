@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Customer dimension (SCD1 baseline). Grain: 1 row per customer_id."
+    columns:
+      - name: customer_key
+        tests: [not_null, unique]
+      - name: customer_id
+        tests: [not_null, unique]
+  - name: dim_products
+    description: "Product dimension. Grain: 1 row per product_id."
+    columns:
+      - name: product_key
+        tests: [not_null, unique]
+      - name: product_id
+        tests: [not_null, unique]
+  - name: fct_order_items
+    description: "Order items fact table. Grain: 1 row per (order_id, order_item_id)."
+    columns:
+      - name: order_id
+        tests: [not_null]
+      - name: order_item_id
+        tests: [not_null]
+      - name: order_purchase_date_key
+        description: "FK to dim_date.date_key (purchase date)."
+      - name: customer_geography_key
+        description: "FK to dim_geography (zip prefix)."
+      - name: seller_geography_key
+        description: "FK to dim_geography.geography_key (seller zip prefix)."    
+  - name: dim_sellers
+    description: "Seller dimension. Grain: 1 row per seller_id."
+    columns:
+      - name: seller_key
+        tests: [not_null, unique]
+      - name: seller_id
+        tests: [not_null, unique]
+  - name: fct_orders
+    description: "Orders fact table. Grain: 1 row per order_id. Includes payment + review aggregates."
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: customer_key
+        tests: [not_null]
+      - name: order_purchase_date_key
+        description: "FK to dim_date.date_key (purchase date)."
+      - name: seller_geography_key
+        description: "FK to dim_geography (zip prefix)."
+      - name: customer_geography_key
+        description: "FK to dim_geography.geography_key (customer zip prefix)."  
+  - name: dim_date
+    description: "Date dimension generated from stg_orders min/max purchase date. Grain: 1 row per day."
+    columns:
+      - name: date_key
+        tests: [not_null, unique]
+      - name: date_day
+        tests: [not_null, unique]
+  - name: dim_geography
+    description: "Geography dimension at zip_code_prefix grain. Conformed for customers/sellers."
+    columns:
+      - name: geography_key
+        tests: [not_null, unique]
+      - name: zip_code_prefix
+        tests: [not_null, unique]
