@@ -111,6 +111,7 @@ This provides:
 - Model & column documentation
 - Full lineage graph (raw → staging → marts → analyses)
 
+
 ![dbt lineage graph](docs/lineage.png)
 
 ## How to Run Locally
