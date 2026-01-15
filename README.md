@@ -28,6 +28,8 @@ The project focuses on **clean data modeling, testable transformations, and anal
 ---
 
 ## Repository Structure (Simplified)
+
+```bash
 .
 ├── docker-compose.yml
 ├── sql/                # Raw schema & CSV loaders
@@ -39,6 +41,7 @@ The project focuses on **clean data modeling, testable transformations, and anal
 │   │   └── marts/      # facts & dimensions
 │   ├── analyses/       # analytical validation queries
 │   └── tests/
+```
 
 ## Data Layers
 
