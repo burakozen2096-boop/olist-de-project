@@ -102,10 +102,16 @@ These analyses act as business-level sanity checks.
 ## dbt Docs & Lineage
 
 Generate documentation:
+
+```bash
 dbt docs generate
+```
 
 Serve docs locally:
+
+```bash
 dbt docs serve
+```
 
 This provides:
 - Model & column documentation
@@ -114,7 +120,10 @@ This provides:
 ![dbt lineage graph](lineage.png)
 
 ## How to Run Locally
+
+```bash
 docker compose up -d
 conda activate dsproj
 dbt build
 dbt docs serve
+```
