@@ -82,7 +82,7 @@ Automated dbt tests cover:
 
 Run models and tests:
 
->dbt build
+dbt build
 
 ## Analytical Validation (SQL Analyses)
 
@@ -95,28 +95,26 @@ To validate correctness beyond schema tests, the project includes SQL analyses s
 
 Run an analysis:
 
->dbt show --select 02_top_categories_by_revenue
+dbt show --select 02_top_categories_by_revenue
 
 These analyses act as business-level sanity checks.
 
 ## dbt Docs & Lineage
 
 Generate documentation:
-- dbt docs generate
+dbt docs generate
 
 Serve docs locally:
-- dbt docs serve
+dbt docs serve
 
 This provides:
 - Model & column documentation
 - Full lineage graph (raw → staging → marts → analyses)
 
-📌 
-
 ![dbt lineage graph](docs/lineage.png)
 
 ## How to Run Locally
->docker compose up -d
->conda activate dsproj
->dbt build
->dbt docs serve
+docker compose up -d
+conda activate dsproj
+dbt build
+dbt docs serve
